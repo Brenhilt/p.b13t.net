@@ -1,0 +1,24 @@
+.. comment: chars from Lv1 to Lv6: #*=-^"
+
+################################################################
+2段階？2要素？認証のトークン発行するやつ
+################################################################
+
+:title: multi (factor|step) 
+:date: 2019/12/01
+:category: 
+:tags: id
+:slug: 01
+:url: entry/2019120101.html
+
+
+
+違うな，IIJ SmartKeyはlabel?側のissuer見てるな．MS Authenticatorはissuerを別で格納してるのかな．書き換えてもアイコンは維持されてる．Google Authenticatorはissuer書き換え出来ない．んで1段
+
+
+https://github.com/google/google-authenticator/wiki/Key-Uri-Format
+
+
+IIJ Smart: labelのissuer(書換可能且つunique制約)
+Google Authen: parametersのissuer(書換不可)
+MS Authen: labelのissuer(書換可能)
