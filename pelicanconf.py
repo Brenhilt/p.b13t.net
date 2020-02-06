@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 AUTHOR = "Brenhilt"
 SITENAME = "チラシの裏も印刷されてる"
 SITEURL = ""
+THEME = "themes/voidy-bootstrap"
 
 PATH = "content"
 ARTICLE_SAVE_AS = "{date:%Y}/{date:%m}{date:%d}{slug}.html"
@@ -13,6 +14,7 @@ ARTICLE_URL = "{date:%Y}/{date:%m}{date:%d}{slug}"
 TIMEZONE = "Asia/Tokyo"
 
 DEFAULT_LANG = "ja"
+DATE_FORMATS = {"ja": "%Y/%m/%d"}
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
