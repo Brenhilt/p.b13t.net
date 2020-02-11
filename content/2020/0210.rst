@@ -1,0 +1,214 @@
+.. comment: chars from Lv1 to Lv6: #*=-^"
+
+################################################################
+2段階？2要素？認証のトークン発行するやつ
+################################################################
+
+:date: 2020/02/08
+:category: technology
+:tags: id,android,totp
+:slug: 01
+:status: draft
+
+
+****************************************************************
+結論
+****************************************************************
+
+サービス名/アカウント名等任意に変更したかったらIIJ SmartKeyが良い
+
+
+****************************************************************
+詳細
+****************************************************************
+
+Android上での話です．iPhoneとか他のOS載った端末はようわかりません．
+
+OTPを生成するアプリは色々有ります．
+
+* Google 認証システム
+* Microsoft Authenticator
+* Salesforce Authenticator
+* Blizzard Authenticator
+* etc.
+
+んで，会社の端末では下記4つを使ってます．
+
+* Google 認証システム
+* Microsoft Authenticator
+* IIJ SmartKey
+* Adobe Authenticator
+
+これらに，対応している各サービスで生成される2段階認証用のQR(コード)をスキャンして登録するわけですが，各アプリによって読み取れるURIのパラメータや登録後の可能な操作が異なるます．個人的な雑感とともにそれらを記します．
+
+読み込ませるのは下記の下段の情報です．上段は `Google AuthenticatorのGithubのページ`_ に書いてあるやつで，今まで見たQRの情報はたいてい上段の形をした情報だった．
+
+
+.. code-block:: spec
+
+    otpauth://TYPE/LABEL?PARAMETERS
+    otpauth://totp/LABEL:username@service?secret=IFBEGRA=&issuer=ISSUER&digits=8
+
+
+.. _`Google AuthenticatorのGithubのページ`: https://github.com/google/google-authenticator/wiki/Key-Uri-Format
+
+================================================================
+Google 認証システム
+================================================================
+
+* これ使えば **たいてい** 問題ないやつ．
+
+
+.. image:: {static}../images/20200210/google01.jpg
+    :height: 480px
+    :width: 240px
+
+初回登録画面
+
+.. image:: {static}../images/20200210/google02.jpg
+    :height: 480px
+    :width: 240px
+
+初回登録完了後画面．PARAMETERのdigits=8は無視されたようです．
+
+.. image:: {static}../images/20200210/google03.jpg
+    :height: 480px
+    :width: 240px
+
+初回登録以外はこんな感じ
+
+.. image:: {static}../images/20200210/google04.jpg
+    :height: 480px
+    :width: 240px
+
+長押しで画面右上のアイコン=可能な操作が変わります． **そして表示されてる6桁がクリップボードにコピーされる**
+
+.. image:: {static}../images/20200210/google05.jpg
+    :height: 480px
+    :width: 240px
+
+鉛筆？マークでLABELの情報書換が可能．あとで戻せるように全選択->切り取りで空欄にして保存
+
+.. image:: {static}../images/20200210/google06.jpg
+    :height: 480px
+    :width: 240px
+
+LABELの情報が入ってた場所は空っぽでも問題ないようです．戻しましょう．貼り付け，
+
+Google Authen: parametersのissuer(書換不可)
+Google Authenticatorはissuer書き換え出来ない．んで1段
+
+
+
+================================================================
+Microsoft Authenticator
+================================================================
+
+* MSがらみ(Office365とか)だとPush通知してくれるのが楽
+* 登録フローの画面遷移がGoogleのと比べて1ページ多い．（「会社アカウント/個人アカウント/それ以外」の選択画面がQRスキャン前に差し込まれる）
+
+
+.. image:: {static}../images/20200210/ms01.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/ms02.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/ms03.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/ms04.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/ms05.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/ms06.jpg
+    :height: 480px
+    :width: 240px
+
+MS Authen: labelのissuer(書換可能)
+MS Authenticatorはissuerを別で格納してるのかな．書き換えてもアイコンは維持されてる．
+
+
+================================================================
+IIJ SmartKey
+================================================================
+
+* 国産
+* トークンは画面下部に横並び．追加すると右に並んでいく．
+* 鍵を選択すると画面中央にトークン表示．選択中以外のトークンは表示されない．
+
+
+.. image:: {static}../images/20200210/iij01.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/iij02.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/iij03.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/iij04.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/iij05.jpg
+    :height: 480px
+    :width: 240px
+
+
+PARAMETER側にISSUERあってもLABELを優先する．書換可能ではあるけどunique制約あり．
+
+
+
+================================================================
+Adobe Authenticator
+================================================================
+
+* 使い勝手はGoogleのと変わらない
+
+
+.. image:: {static}../images/20200210/adobe01.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/adobe02.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/adobe03.jpg
+    :height: 480px
+    :width: 240px
+
+.. image:: {static}../images/20200210/adobe04.jpg
+    :height: 480px
+    :width: 240px
+
+
+たまにTYPEがtotpじゃないやつがある（yahooとか）．
+
+totpのRFCは `6238`_ ．
+
+.. _`6238`: https://tools.ietf.org/html/rfc6238
+
+
+たとえば，AWSのIAMで設定する際に表示されるQRだと，こう
+
+.. code-block:: spec
+
+    otpauth://totp/Amazon%20Web%20Services:<iam_name>@<account_name>?secret=<長いので略>&issuer=Amazon%20Web%20Services
+
+
+
+今までGoogleのやつに登録できなかったのは `Yahooのワンタイムパスワード`_ だけです．yahooのはTYPEがyotpになってるんで多分他のやつも読めないんじゃないかと思われます．
+
+.. _`Yahooのワンタイムパスワード`: https://id.yahoo.co.jp/security/otp.html

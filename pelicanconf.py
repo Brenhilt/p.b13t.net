@@ -13,8 +13,11 @@ ARTICLE_URL = "{date:%Y}/{date:%m}{date:%d}{slug}"
 
 TIMEZONE = "Asia/Tokyo"
 
+DELETE_OUTPUT_DIRECTORY = True
 DEFAULT_LANG = "ja"
-DATE_FORMATS = {"ja": "%Y/%m/%d"}
+DATE_FORMATS = {"ja": "%Y/%m/%d", "en": "%d-%m-%Y"}
+DRAFT_URL = "drafts/{date:%Y}{date:%m}{date:%d}{slug}"
+DRAFT_SAVE_AS = "drafts/{date:%Y}{date:%m}{date:%d}{slug}.html"
 
 # Feed generation is usually not desired when developing
 FEED_ALL_ATOM = None
