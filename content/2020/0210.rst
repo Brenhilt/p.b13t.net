@@ -41,70 +41,196 @@ OTPを生成するアプリは色々有ります．
 
 これらに，対応している各サービスで生成される2段階認証用のQR(コード)をスキャンして登録するわけですが，各アプリによって読み取れるURIのパラメータや登録後の可能な操作が異なるます．個人的な雑感込みでそれらを書きます．
 
-読み込ませるのは下記の下段の情報です．上段は `Google AuthenticatorのGithubのページ`_ に書いてあるやつで，今まで見たQRの情報はたいてい上段の形をした情報でした．
-
+読み込ませるのは下記の上段(Adobeのだけ下段)の情報です．
 
 .. code-block:: spec
 
-    otpauth://TYPE/LABEL?PARAMETERS
-    otpauth://totp/LABEL:username@service?secret=IFBEGRA=&issuer=ISSUER&digits=8
+    otpauth://totp/SERVICE:USER@DOMAIN?secret=IFBEGRA=&issuer=ISSUER&digits=8
+    otpauth://totp/ISSUER:USER@DOMAIN?secret=IFBEGRA=&issuer=ISSUER&digits=8
 
 
 .. _`Google AuthenticatorのGithubのページ`: https://github.com/google/google-authenticator/wiki/Key-Uri-Format
+
+.. # {{{
+.. |google1| image:: {static}../images/20200210/google01.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |google2| image:: {static}../images/20200210/google02.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |google3| image:: {static}../images/20200210/google03.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |google4| image:: {static}../images/20200210/google04.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |google5| image:: {static}../images/20200210/google05.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |google6| image:: {static}../images/20200210/google06.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |google7| image:: {static}../images/20200210/google07.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |google8| image:: {static}../images/20200210/google08.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |ms1| image:: {static}../images/20200210/ms01.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |ms2| image:: {static}../images/20200210/ms02.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |ms3| image:: {static}../images/20200210/ms03.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |ms4| image:: {static}../images/20200210/ms04.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |ms5| image:: {static}../images/20200210/ms05.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |ms6| image:: {static}../images/20200210/ms06.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |ms7| image:: {static}../images/20200210/ms07.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |ms8| image:: {static}../images/20200210/ms08.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |iij1| image:: {static}../images/20200210/iij01.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |iij2| image:: {static}../images/20200210/iij02.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |iij3| image:: {static}../images/20200210/iij03.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |iij4| image:: {static}../images/20200210/iij04.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |iij5| image:: {static}../images/20200210/iij05.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |iij6| image:: {static}../images/20200210/iij06.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |iij7| image:: {static}../images/20200210/iij07.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |adobe1| image:: {static}../images/20200210/adobe01.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |adobe2| image:: {static}../images/20200210/adobe02.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |adobe3| image:: {static}../images/20200210/adobe03.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. |adobe4| image:: {static}../images/20200210/adobe04.jpg
+    :height: 480px
+    :width: 240px
+    :class: lazyload
+
+.. # }}}
 
 ================================================================
 Google 認証システム
 ================================================================
 
 * これ使えば **たいてい** 問題ないやつ．
+* LABEL/issuerを表示
+* parametersのissuerは書換不可
+* それらを1行で表示
 
+以下画像
 
-.. |google1| image:: {static}../images/20200210/google01.jpg
-    :height: 480px
-    :width: 240px
+|google1|
 
-.. |google2| image:: {static}../images/20200210/google02.jpg
-    :height: 480px
-    :width: 240px
+初回起動時
 
-.. |google3| image:: {static}../images/20200210/google03.jpg
-    :height: 480px
-    :width: 240px
-
-.. |google4| image:: {static}../images/20200210/google04.jpg
-    :height: 480px
-    :width: 240px
-
-.. |google5| image:: {static}../images/20200210/google05.jpg
-    :height: 480px
-    :width: 240px
-
-.. |google6| image:: {static}../images/20200210/google06.jpg
-    :height: 480px
-    :width: 240px
-
-.. |google7| image:: {static}../images/20200210/google07.jpg
-    :height: 480px
-    :width: 240px
+|google2|
 
 初回登録画面
 
+|google3|
+
 初回登録完了後画面．PARAMETERのdigits=8は無視されたようです．
+
+|google4|
 
 初回登録以外はこんな感じ
 
+|google5|
+
 長押しで画面右上のアイコン=可能な操作が変わります． **そして表示されてる6桁がクリップボードにコピーされる**
 
-鉛筆？マークでLABELの情報書換が可能．あとで戻せるように全選択->切り取りで空欄にして保存
+|google6|
 
-LABELの情報が入ってた場所は空っぽでも問題ないようです．戻しましょう． **長押しして** 鉛筆ボタンタップ，貼り付け．
+鉛筆？マークでLABELの情報書換が可能．あとで戻せるように全選択->切り取りで空欄にして保存してみましょう
 
 |google7|
 
-**Oh...**
+LABELの情報が入ってた場所は空っぽでも問題ないようです．戻しましょう． **長押しした** 後，鉛筆ボタンタップ，貼り付け．
 
-Google Authen: parametersのissuer(書換不可)
-Google Authenticatorはissuer書き換え出来ない．んで1段
+|google8|
+
+**Oh...**
 
 
 
@@ -112,37 +238,22 @@ Google Authenticatorはissuer書き換え出来ない．んで1段
 Microsoft Authenticator
 ================================================================
 
-* MSがらみ(Office365とか)だとPush通知してくれるのが楽
+* MSがらみ(Office365とか)の場合id/passでログインする
+
+  * それらに関してはPush通知してくれる．楽
+
 * 登録フローの画面遷移がGoogleのと比べて1ページ多い．（「会社アカウント/個人アカウント/それ以外」の選択画面がQRスキャン前に差し込まれる）
+* LABELのissuer(書換可能)
+* issuerを別で格納してるのかな．書き換えてもアイコンは維持されてる．
 
-
-.. image:: {static}../images/20200210/ms01.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/ms02.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/ms03.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/ms04.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/ms05.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/ms06.jpg
-    :height: 480px
-    :width: 240px
-
-MS Authen: labelのissuer(書換可能)
-MS Authenticatorはissuerを別で格納してるのかな．書き換えてもアイコンは維持されてる．
-
+|ms1|
+|ms2|
+|ms3|
+|ms4|
+|ms5|
+|ms6|
+|ms7|
+|ms8|
 
 ================================================================
 IIJ SmartKey
@@ -153,29 +264,16 @@ IIJ SmartKey
 * 鍵を選択すると画面中央にトークン表示．選択中以外のトークンは表示されない．
 
 
-.. image:: {static}../images/20200210/iij01.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/iij02.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/iij03.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/iij04.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/iij05.jpg
-    :height: 480px
-    :width: 240px
-
 
 PARAMETER側にISSUERあってもLABELを優先する．書換可能ではあるけどunique制約あり．
 
+|iij1|
+|iij2|
+|iij3|
+|iij4|
+|iij5|
+|iij6|
+|iij7|
 
 
 ================================================================
@@ -184,23 +282,10 @@ Adobe Authenticator
 
 * 使い勝手はGoogleのと変わらない
 
-
-.. image:: {static}../images/20200210/adobe01.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/adobe02.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/adobe03.jpg
-    :height: 480px
-    :width: 240px
-
-.. image:: {static}../images/20200210/adobe04.jpg
-    :height: 480px
-    :width: 240px
-
+|adobe1|
+|adobe2|
+|adobe3|
+|adobe4|
 
 たまにTYPEがtotpじゃないやつがある（yahooとか）．
 

@@ -47,3 +47,8 @@ DEFAULT_PAGINATION = 20
 STYLESHEET_FILES = [
     "voidybootstrap.css",
 ]
+
+# SKIP_DEFAULT_JS = True
+JAVASCRIPT_FILES = [
+    "lazysizes.min.js",
+]
