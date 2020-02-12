@@ -42,3 +42,8 @@ DEFAULT_PAGINATION = 20
 
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
+
+# SKIP_DEFAULT_CSS = True
+STYLESHEET_FILES = [
+    "voidybootstrap.css",
+]

@@ -39,9 +39,9 @@ OTPを生成するアプリは色々有ります．
 * IIJ SmartKey
 * Adobe Authenticator
 
-これらに，対応している各サービスで生成される2段階認証用のQR(コード)をスキャンして登録するわけですが，各アプリによって読み取れるURIのパラメータや登録後の可能な操作が異なるます．個人的な雑感とともにそれらを記します．
+これらに，対応している各サービスで生成される2段階認証用のQR(コード)をスキャンして登録するわけですが，各アプリによって読み取れるURIのパラメータや登録後の可能な操作が異なるます．個人的な雑感込みでそれらを書きます．
 
-読み込ませるのは下記の下段の情報です．上段は `Google AuthenticatorのGithubのページ`_ に書いてあるやつで，今まで見たQRの情報はたいてい上段の形をした情報だった．
+読み込ませるのは下記の下段の情報です．上段は `Google AuthenticatorのGithubのページ`_ に書いてあるやつで，今まで見たQRの情報はたいてい上段の形をした情報でした．
 
 
 .. code-block:: spec
@@ -59,41 +59,49 @@ Google 認証システム
 * これ使えば **たいてい** 問題ないやつ．
 
 
-.. image:: {static}../images/20200210/google01.jpg
+.. |google1| image:: {static}../images/20200210/google01.jpg
+    :height: 480px
+    :width: 240px
+
+.. |google2| image:: {static}../images/20200210/google02.jpg
+    :height: 480px
+    :width: 240px
+
+.. |google3| image:: {static}../images/20200210/google03.jpg
+    :height: 480px
+    :width: 240px
+
+.. |google4| image:: {static}../images/20200210/google04.jpg
+    :height: 480px
+    :width: 240px
+
+.. |google5| image:: {static}../images/20200210/google05.jpg
+    :height: 480px
+    :width: 240px
+
+.. |google6| image:: {static}../images/20200210/google06.jpg
+    :height: 480px
+    :width: 240px
+
+.. |google7| image:: {static}../images/20200210/google07.jpg
     :height: 480px
     :width: 240px
 
 初回登録画面
 
-.. image:: {static}../images/20200210/google02.jpg
-    :height: 480px
-    :width: 240px
-
 初回登録完了後画面．PARAMETERのdigits=8は無視されたようです．
-
-.. image:: {static}../images/20200210/google03.jpg
-    :height: 480px
-    :width: 240px
 
 初回登録以外はこんな感じ
 
-.. image:: {static}../images/20200210/google04.jpg
-    :height: 480px
-    :width: 240px
-
 長押しで画面右上のアイコン=可能な操作が変わります． **そして表示されてる6桁がクリップボードにコピーされる**
-
-.. image:: {static}../images/20200210/google05.jpg
-    :height: 480px
-    :width: 240px
 
 鉛筆？マークでLABELの情報書換が可能．あとで戻せるように全選択->切り取りで空欄にして保存
 
-.. image:: {static}../images/20200210/google06.jpg
-    :height: 480px
-    :width: 240px
+LABELの情報が入ってた場所は空っぽでも問題ないようです．戻しましょう． **長押しして** 鉛筆ボタンタップ，貼り付け．
 
-LABELの情報が入ってた場所は空っぽでも問題ないようです．戻しましょう．貼り付け，
+|google7|
+
+**Oh...**
 
 Google Authen: parametersのissuer(書換不可)
 Google Authenticatorはissuer書き換え出来ない．んで1段

@@ -1,5 +1,9 @@
+body {
+    font-size:16px;
+}
+
 .navbar {
-	margin-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 @media screen and (min-width: 768px) {
@@ -14,7 +18,7 @@ img {
 }
 
 #content {
-    padding-right: 50px; 
+    padding-right: 50px;
     line-height: 26px;
 }
 
@@ -36,28 +40,28 @@ p.standfirst {
 }
 
 .article-header-date, .article-header-info {
-	color: #999;
+    color: #999;
 }
 
 .social-links {
-	font-size: 18px;
+    font-size: 18px;
 }
 
 .category-links {
-	font-size: 18px;
+    font-size: 18px;
 }
 
 .tag-1 {
-	font-size: 14pt;
+    font-size: 14pt;
 }
 .tag-2 {
-	font-size: 12pt;
+    font-size: 12pt;
 }
 .tag-3 {
-	font-size: 10pt;
+    font-size: 10pt;
 }
 .tag-4 {
-	font-size: 8pt;
+    font-size: 8pt;
 }
 
 .tag-cloud {
@@ -69,7 +73,7 @@ p.standfirst {
 }
 
 .home-top {
-	margin-top: 20px;
+    margin-top: 20px;
 }
 
 #sidebar h4 {

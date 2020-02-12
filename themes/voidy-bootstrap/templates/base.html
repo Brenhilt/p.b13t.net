@@ -7,11 +7,11 @@
     <meta name="description" content="{% block metadesc %}{{ DEFAULT_METADESC|e }}{% endblock %}" />
     <meta name="author" content="{{ AUTHOR }}" />
     <meta name="generator" content="Pelican (VoidyBootstrap theme)" />
-	{% block meta_other %}{% endblock %}
+    {% block meta_other %}{% endblock %}
     {% if OPEN_GRAPH_FB_APP_ID %}
     <meta property="fb:app_id" content="{{ OPEN_GRAPH_FB_APP_ID }}"/>
     {% endif %}
-	{% block open_graph %}
+    {% block open_graph %}
       {% if OPEN_GRAPH %}
         <meta property="og:type" content="website"/>
         <meta property="og:title" content="{{ SITENAME|striptags|e }}"/>
@@ -28,8 +28,8 @@
 
     <title>{% block title %}{{ SITENAME }}{% if SITETAG %} - {{ SITETAG|escape }}{% endif %}{% endblock %}</title>
 
-    {% if not SKIP_DEFAULT_CSS %}   
-      {% if BOOTSTRAP_STYLESHEET %} 
+    {% if not SKIP_DEFAULT_CSS %}
+      {% if BOOTSTRAP_STYLESHEET %}
         <link rel="stylesheet" href="{{ SITEURL }}/theme/css/{{ BOOTSTRAP_STYLESHEET }}" />
       {% else %}
         <link rel="stylesheet"
@@ -47,7 +47,7 @@
       <link rel="stylesheet" href="{{ url }}" />
     {% endfor %}
 
-    {% if not STYLESHEET_FILES and STYLESHEETS %}   
+    {% if not STYLESHEET_FILES and STYLESHEETS %}
       {% set STYLESHEET_FILES = STYLESHEETS %}
     {% endif %}
     {% for css in STYLESHEET_FILES %}
@@ -73,18 +73,18 @@
   </head>
 
   <body>
-{% if not SKIP_DEFAULT_NAVIGATION %}   
+{% if not SKIP_DEFAULT_NAVIGATION %}
     <nav class="navbar navbar-default">
       <div class="container">
-	   <div class="navbar-header">
-		<button type="button" class="navbar-toggle" 
-				data-toggle="collapse" data-target="#main-navbar-collapse">
-		  <span class="sr-only">Toggle navigation</span>
-		  <span class="icon-bar"></span>
-		  <span class="icon-bar"></span>
-		  <span class="icon-bar"></span>
-		</button>
-		<a class="navbar-brand" href="{{ SITEURL }}/" rel="home">
+       <div class="navbar-header">
+        <button type="button" class="navbar-toggle"
+                data-toggle="collapse" data-target="#main-navbar-collapse">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="{{ SITEURL }}/" rel="home">
           <i class="fa fa-home fa-fw fa-lg"> </i> {{ HOME_LABEL|default('') }}</a>
        </div>
 
@@ -110,28 +110,28 @@
             </li>
           <li class="divider"></li>
           {% if FEED_ALL_ATOM %}
-            <li><a href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}" 
+            <li><a href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}"
                    type="application/atom+xml" rel="alternate">
                 <i class="fa fa-rss fa-fw fa-lg"></i> </a></li>
           {% endif %}
         </ul> <!-- /nav -->
       </div> <!-- /navbar-collapse -->
-	  </div> <!-- /container -->
+      </div> <!-- /container -->
     </nav> <!-- /navbar -->
 {% endif %}
 
     {% for file in CUSTOM_SITE_HEADERS %}
-	  {% include "includes/" + file %}
+      {% include "includes/" + file %}
     {% else %}
       {% include "includes/jumbotron.html" %}
     {% endfor %}
 
     {% block custom_header %}
-	{% endblock %}
+    {% endblock %}
 
     <div class="container" id="main-container">
       {% block container_header %}
-	  {% endblock %}
+      {% endblock %}
 {% if SIDEBAR %}
         {% if SIDEBAR_SIZE is defined and SIDEBAR_SIZE < 12 %}
           {% set CONTENT_COLS = 12 - SIDEBAR_SIZE %}
@@ -141,8 +141,8 @@
 {% else %}
         <div class="" id="content">
 {% endif %}
-		    {% block content_header %}
-			{% endblock %}
+            {% block content_header %}
+            {% endblock %}
             {% block content_body %}
             {% endblock %}
             {% block content_footer %}
@@ -156,11 +156,11 @@
       </div><!--/row-->
 {% endif %}
       {% block container_footer %}
-	  {% endblock %}
+      {% endblock %}
     </div><!--/.container /#main-container -->
 
     <footer id="site-footer">
-      {% include 'includes/' + CUSTOM_FOOTER|default('footer.html') ignore missing %} 
+      {% include 'includes/' + CUSTOM_FOOTER|default('footer.html') ignore missing %}
       {% if SKIP_COLOPHON %}
       <!-- Site built using Pelican.  Theme based on VoidyBootstrap. -->
       {% else %}
@@ -169,9 +169,9 @@
         Site built using <a href="http://getpelican.com/" target="_blank">Pelican</a>
         &nbsp;&bull;&nbsp; Theme based on
         <a href="http://www.voidynullness.net/page/voidy-bootstrap-pelican-theme/"
-           target="_blank">VoidyBootstrap</a> by 
+           target="_blank">VoidyBootstrap</a> by
         <a href="http://www.robertiwancz.com/"
-           target="_blank">RKI</a>  
+           target="_blank">RKI</a>
         </p>
       </address><!-- /colophon  -->
       {% endif %}
@@ -181,7 +181,7 @@
     {% include 'includes/disqus_script.html' %}
 
     <!-- javascript -->
-    {% if not SKIP_DEFAULT_JS %}   
+    {% if not SKIP_DEFAULT_JS %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
@@ -189,7 +189,7 @@
     {% endif %}
 
     {% for url in JAVASCRIPT_URLS %}
-	<script src="{{ url }}"></script>
+    <script src="{{ url }}"></script>
     {% endfor %}
     {% for js in JAVASCRIPT_FILES %}
     <script src="{{ SITEURL }}/theme/js/{{ js }}" ></script>
