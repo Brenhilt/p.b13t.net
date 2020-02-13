@@ -373,6 +373,7 @@ QR読み込み後
 
 削除しようとすると確認画面．この後の画面で私はパターン認証の画面になったので端末に設定しているロック解除操作が必要になる模様．
 
+.. role:: strike
 
 
 .. [#]
@@ -400,8 +401,7 @@ QR読み込み後
     .. _`6238`: https://tools.ietf.org/html/rfc6238
 
 .. [#]
-
-    今までGoogleのやつに登録できなかったのは `Yahooのワンタイムパスワード`_ だけです．yahooのはTYPEがyotpになってるんで多分他のやつも読めないんじゃないかと思われます．
+    今までGoogleのやつに登録できなかったのは `Yahooのワンタイムパスワード`_ だけです．yahooのは :strike:`TYPEがyotp` otpauthの 部分が yjotp になってるんで多分他のやつも読めないんじゃないかと思われます．
 
     .. _`Yahooのワンタイムパスワード`: https://id.yahoo.co.jp/security/otp.html
 

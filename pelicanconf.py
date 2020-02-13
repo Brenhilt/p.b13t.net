@@ -49,3 +49,4 @@ if THEME == "themes/voidy-bootstrap":
     STYLESHEET_FILES = [
         "voidybootstrap.css",
     ]
+DISPLAY_PAGES_ON_MENU = True

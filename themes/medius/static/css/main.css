@@ -327,3 +327,5 @@ div.pagination a:active { outline: none; color: rgba(0, 0, 0, 0.8); border-color
 .highlight .il { color: #0000cf; font-weight: bold; }
 
 /*# sourceMappingURL=main.css.map */
+
+.strike { text-decoration: line-through; }
