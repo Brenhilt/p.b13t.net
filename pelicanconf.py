@@ -30,8 +30,9 @@ AUTHOR_FEED_RSS = None
 
 # Blogroll
 LINKS = (
-    ("Pelican", "http://getpelican.com/"),
-    ("Python.org", "http://python.org/"),
+    ("Pelican", "https://getpelican.com/"),
+    ("Python.org", "https://python.org/"),
+    ("b13t.net", "https://b13t.net/"),
 )
 
 # Social widget
@@ -48,5 +49,3 @@ if THEME == "themes/voidy-bootstrap":
     STYLESHEET_FILES = [
         "voidybootstrap.css",
     ]
-
-DISPLAY_PAGES_ON_MENU = True
