@@ -5,7 +5,9 @@ from __future__ import unicode_literals
 AUTHOR = "Brenhilt"
 SITENAME = "チラシの裏も印刷されてる"
 SITEURL = ""
+THEME = "themes/gum"
 THEME = "themes/voidy-bootstrap"
+THEME = "themes/medius"
 
 PATH = "content"
 ARTICLE_SAVE_AS = "{date:%Y}/{date:%m}{date:%d}{slug}.html"
@@ -30,7 +32,6 @@ AUTHOR_FEED_RSS = None
 LINKS = (
     ("Pelican", "http://getpelican.com/"),
     ("Python.org", "http://python.org/"),
-    ("Jinja2", "http://jinja.pocoo.org/"),
 )
 
 # Social widget
@@ -43,12 +44,9 @@ DEFAULT_PAGINATION = 20
 # Uncomment following line if you want document-relative URLs when developing
 #RELATIVE_URLS = True
 
-# SKIP_DEFAULT_CSS = True
-STYLESHEET_FILES = [
-    "voidybootstrap.css",
-]
+if THEME == "themes/voidy-bootstrap":
+    STYLESHEET_FILES = [
+        "voidybootstrap.css",
+    ]
 
-# SKIP_DEFAULT_JS = True
-JAVASCRIPT_FILES = [
-    "lazysizes.min.js",
-]
+DISPLAY_PAGES_ON_MENU = True

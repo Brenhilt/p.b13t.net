@@ -8,7 +8,6 @@
 :category: technology
 :tags: id,android,totp
 :slug: 01
-:status: draft
 
 
 ****************************************************************
@@ -22,7 +21,8 @@
 詳細
 ****************************************************************
 
-Android上での話です．iPhoneとか他のOS載った端末はようわかりません．
+以下，一定時間毎に生成される6桁あるいは8桁の数値の事をトークンと表記します．
+また，Android上での話です．iPhoneとか他のOS載った端末はようわかりません．
 
 OTPを生成するアプリは色々有ります．
 
@@ -30,19 +30,16 @@ OTPを生成するアプリは色々有ります．
 * Microsoft Authenticator
 * Salesforce Authenticator
 * Blizzard Authenticator
-* etc.
 
-んで，会社の端末では下記4つを使ってます．
+等々．んで，会社の端末では下記4つを使ってます．
 
 * Google 認証システム
 * Microsoft Authenticator
 * IIJ SmartKey
 * Adobe Authenticator
 
-これらに，対応している各サービスで生成される2段階認証用のQR(コード)をスキャンして登録するわけですが，各アプリによって読み取れるURIのパラメータや登録後の可能な操作が異なるます．読み込ませたサンプル/個人的な雑感込みでそれらを書きます．
-
-
-.. _`Google AuthenticatorのGithubのページ`: https://github.com/google/google-authenticator/wiki/Key-Uri-Format
+これらに，対応している各サービスで生成される2段階認証用のQR(コード)をスキャンして登録するわけですが，各アプリによって読み取れるURIのパラメータや登録後の可能な操作が異なるます．
+読み込ませたサンプル [#]_ /個人的な雑感込みでそれらを書きます．
 
 .. # {{{
 .. |google1| image:: {static}../images/20200210/google01.jpg
@@ -189,7 +186,7 @@ Google 認証システム
 雑感
 -----------------------------------------------------------------
 
-* これ使えば **たいてい** 問題ないやつ．
+* これ使えば **たいてい** [#]_ 問題ない．
 
 状態等
 -----------------------------------------------------------------
@@ -198,7 +195,7 @@ Google 認証システム
 * SERVICE/USER/DOMAIN/ISSUERを表示
 * ISSUERは書換不可
 * digitsは無視
-* それらを1行で表示
+* それら合わせて2行（上段がトークン，下段がSERVICE/USER/DOMAIN/ISSUER）で表示
 
 画像等
 -----------------------------------------------------------------
@@ -259,6 +256,7 @@ Microsoft Authenticator
 * USER/DOMAINは表示のみ
 * ISSUERは表示しない？無視？
 * SERVICEを別で格納してるのか，書き換えてもアイコンは維持されていた．(AWSのIAMのやつとか)
+* それら合わせて3行（上段がSERVICE，中段がUSER/DOMAIN，下段がトークン）で表示
 
 画像等
 -----------------------------------------------------------------
@@ -301,14 +299,15 @@ IIJ SmartKey
 
 * 国産
 * トークンは画面下部に横並び．追加すると右に並んでいく．
-* 鍵を選択すると画面中央にトークン表示．選択中以外のトークンは表示されない．
+* 画面下段左右横並びのSERVICEを選択すると画面中央にトークン表示．選択中以外のトークンは表示されない．
 
 状態等
 -----------------------------------------------------------------
 
-* 読み込ませたサンプルは「otpauth://totp/SERVICE:USER@DOMAIN?secret=IFBEGRA=&issuer=ISSUER&digits=8」
+* 読み込ませたサンプル -> otpauth://totp/SERVICE:USER@DOMAIN?secret=IFBEGRA=&issuer=ISSUER&digits=8
 * SERVICEとISSUERある場合はSERVICE優先．読み取りはしていて，書換可能．ただしサービス名は一意である必要あり．
 * digits=8も読み取れる
+* それら合わせて3行？（上段：画面中央がトークン，中段：トークンの下辺りがUSER/DOMAIN，下段：左右横並びでSERVICE列挙）で表示
 
 画像等
 -----------------------------------------------------------------
@@ -350,6 +349,11 @@ Adobe Authenticator
 状態等
 -----------------------------------------------------------------
 
+* 読み込ませたサンプル -> otpauth://totp/ISSUER:USER@DOMAIN?secret=IFBEGRA=&issuer=ISSUER&digits=8
+
+  * 上3アプリで読み込ませたサンプル: otpauth://totp/SERVICE:USER@DOMAIN?secret=IFBEGRA=&issuer=ISSUER&digits=8 は SERVICEとISSUERが不一致の為読み込めない
+
+
 画像等
 -----------------------------------------------------------------
 
@@ -371,21 +375,33 @@ QR読み込み後
 
 
 
-たまにTYPEがtotpじゃないやつがある（yahooとか）．
+.. [#]
 
-totpのRFCは `6238`_ ．
+    サンプルは `Google AuthenticatorのGithubのページ`_ に記載の下記を元に作成． `IIJ SmartKeyが読み取るURIのフォーマット`_ も同じ構造してます．
 
-.. _`6238`: https://tools.ietf.org/html/rfc6238
+    .. code-block:: spec
+
+        otpauth://TYPE/LABEL?PARAMETERS
+
+    今まで見たQRコードの情報は全部の形だった．たとえば，AWSのIAMで設定する際に表示されたQRは，こう
+
+    .. code-block:: spec
+
+        otpauth://totp/Amazon%20Web%20Services:<iam_name>@<account_name>?secret=<略>&issuer=Amazon%20Web%20Services
 
 
-たとえば，AWSのIAMで設定する際に表示されるQRだと，こう
+    .. _`Google AuthenticatorのGithubのページ`: https://github.com/google/google-authenticator/wiki/Key-Uri-Format
+    .. _`IIJ SmartKeyが読み取るURIのフォーマット`: https://www1.auth.iij.jp/smartkey/uri_v2.html
 
-.. code-block:: spec
+    たまにTYPEがtotpじゃないやつがある（yahooとか）．
 
-    otpauth://totp/Amazon%20Web%20Services:<iam_name>@<account_name>?secret=<長いので略>&issuer=Amazon%20Web%20Services
+    totpのRFCは `6238`_ ．
 
+    .. _`6238`: https://tools.ietf.org/html/rfc6238
 
+.. [#]
 
-今までGoogleのやつに登録できなかったのは `Yahooのワンタイムパスワード`_ だけです．yahooのはTYPEがyotpになってるんで多分他のやつも読めないんじゃないかと思われます．
+    今までGoogleのやつに登録できなかったのは `Yahooのワンタイムパスワード`_ だけです．yahooのはTYPEがyotpになってるんで多分他のやつも読めないんじゃないかと思われます．
 
-.. _`Yahooのワンタイムパスワード`: https://id.yahoo.co.jp/security/otp.html
+    .. _`Yahooのワンタイムパスワード`: https://id.yahoo.co.jp/security/otp.html
+
