@@ -1,0 +1,271 @@
+.. comment: chars from Lv1 to Lv6: #*=-^"
+
+################################################################
+Pythonでの日付あれこれ
+################################################################
+
+:date: 2020/02/21
+:category: technology
+:tags: python, datetime, timezone
+:slug: 01
+
+.. role:: tt
+
+****************************************************************
+結論
+****************************************************************
+
+* **str -> naive -> aware(UTC)** にしてからあつかう
+* :tt:`datetime.replace` の :tt:`tzinfo` とか :tt:`datetime` の :tt:`tzinfo` には :tt:`pytz.timezone("Asia/Tokyo")` を食わせてはいけない
+* 見てみぬふりは……だめですかそうですか
+
+
+まず :tt:`import` ，UTC/JSTの定義，日付文字列の用意 [1]_
+
+.. code-block:: python
+
+    from datetime import datetime, timedelta, timezone
+
+    UTC = timezone.utc
+    JST = timezone(timedelta(hours=+9), "JST")
+    val = "2020/02/15T13:59:27Z"
+
+string -> naive
+================================================================
+
+.. code-block:: python
+
+    # 末尾のtimezone情報削るかただの文字列として扱う．strptimeに%zとか%Zとか渡さない
+    naive = datetime.strptime(val, "%Y/%m/%dT%H:%M:%SZ")
+
+naive -> aware
+================================================================
+
+.. code-block:: python
+
+    aware_utc = naive.replace(tzinfo=UTC)
+
+aware -> naive
+================================================================
+
+.. code-block:: python
+
+    naive = aware_utc.replace(tzinfo=None)
+
+違うtimezoneでの時間にする
+================================================================
+
+.. code-block:: python
+
+    aware_jst = aware_utc.astimezone(JST)
+
+違うtimezoneに書き換える
+================================================================
+
+.. code-block:: python
+
+    aware_jst = aware_utc.replace(tzinfo=JST)
+
+
+****************************************************************
+詳細
+****************************************************************
+
+わたしは10年連続18回目の「naiveからawareへの変換をググる」をした人です．
+
+`前にQiitaに書いた`_ 記憶は有りましたが7年前ですしunixtimeへの変換だしPython2か．
+
+pytz使ってたんですけど油断するとLMT(+09:19)返してきたり，そもそも `Stack Overflowの書き込み`_ でviolatesだからdangerousだぜとか言われたり `pytz: The Fastest Footgun in the West`_ ではタイトルからして「西部最速の自分の足撃っちゃうやつ」とかちょっと何言ってるのかわからないこと書かれたりしててどうしたらいいの．楽に生きたい．だらけたい．
+
+標準モジュールだけで何とかする(pipとかで追加したくない人)
+================================================================
+
+:tt:`datetime` モジュールだけでやります． :tt:`datetime.timezone` で必要なtimezone定義して使います． [1]_ [2]_
+
+.. code-block:: python
+
+    from datetime import datetime, timedelta, timezone
+
+    UTC = timezone.utc
+    JST = timezone(timedelta(hours=+9), "JST")
+    val = "2020/02/15T13:59:27Z"
+
+    # (str -> ) aware -> naive
+    aware0 = datetime.strptime(val, "%Y/%m/%dT%H:%M:%S%z")
+    naive0 = aware0.replace(tzinfo=None)
+
+    # (str -> ) naive -> aware
+    naive1 = datetime.strptime(val[:-1], "%Y/%m/%dT%H:%M:%S")
+    aware1_utc = naive1.replace(tzinfo=UTC)
+
+    # utc -> jst
+    # 違うtimezoneでの時間にする
+    aware1_jst = aware1_utc.astimezone(JST)
+    # 違うtimezoneに書き換える
+    aware2_jst = aware1_utc.replace(tzinfo=JST)
+
+
+str -> awareで気をつけること
+----------------------------------------------------------------
+
+Python3.6以前だと :tt:`%z` / :tt:`%Z` で拾えないものがあります．
+
++091900
+  :tt:`ValueError: unconverted data remains: 00`
+Z(UTCを表すやつ)
+  :tt:`ValueError: time data 'Z' does not match format '%z'`
+GMT/UTC
+  naiveになる(Python3.7以降でも同様)
++01:00:00みたいなの
+  Python3.7でtimezone表記の時分秒のセパレータ(:)を解釈するようになったり秒まで読み取れるようになった
+ESTとかCST
+  `指定子一覧の表`_ の :tt:`%Z` に記載されてますがこれも読み取りは出来ません(Python3.7以降でも同様)
+
+
+ヤンデレのpytzに死ぬほど愛されて眠れない人
+================================================================
+
+naiveで読んで :tt:`pytz.tzinfo.localize` でawareにする．
+
+.. code-block:: python
+
+    from datetime import datetime, timedelta
+    from pytz import timezone
+
+    UTC = timezone("UTC")
+    JST = timezone("Asia/Tokyo")
+    val = "2020/02/15T13:59:27Z"
+
+    # (str -> ) aware -> naive
+    aware0 = datetime.strptime(val, "%Y/%m/%dT%H:%M:%S%z")
+    naive0 = aware0.replace(tzinfo=None)
+
+    # (str -> ) naive -> aware
+    naive1 = datetime.strptime(val[:-1], "%Y/%m/%dT%H:%M:%S")
+    aware1_utc = UTC.localize(naive1)
+
+    # utc -> jst
+    # 違うtimezoneでの時間にする
+    aware1_jst = aware1_utc.astimezone(JST)
+    # 違うtimezoneに書き換える
+    aware2_jst = JST.localize(aware1_utc.replace(tzinfo=None))
+
+naive -> awareで気をつけること
+----------------------------------------------------------------
+
+naive -> awareの際に，単純に :tt:`replace` を使うとJST(+09:00)ではなくLMT(+09:19)になってしまいます．
+
+* :tt:`datetime.datetime` クラスからインスタンス作成する際はtimezoneに関する処理は行われない
+* :tt:`replace` は単純にインスタンスのプロパティを書き換えるだけ
+* pytzが自前で持ってるzoneinfoのAsia/Tokyoには3つのtimezone情報が格納されており， :tt:`pytz.timezone("Asia/Tokyo")` が実行された段階では日時情報が無いためLMT(+09:19)が返される
+
+っていう流れでLMTになるようです． [3]_
+
+:tt:`datetime(y, m, d, H, M, S, tzinfo=pytz.timezone("Asia/Tokyo"))` も同様にLMTになります．
+
+2020年とかの日付なのにLMT返されるのは困るので :tt:`datetime.replace` の :tt:`tzinfo` とか :tt:`datetime` の :tt:`tzinfo` には :tt:`pytz.timezone("Asia/Tokyo")` は食わすなって結論になりました．
+
+新進気鋭のdateutil君に恋をした人
+================================================================
+
+:tt:`dateutil.parser.parse` つよい．
+
+.. code-block:: python
+
+    from datetime import datetime, timedelta
+    from dateutil.parser import parse
+    from dateutil.tz import gettz
+
+    UTC = gettz("UTC")
+    JST = gettz("Asia/Tokyo")
+    val = "2020/02/15T13:59:27Z"
+
+    # (str -> ) aware -> naive
+    aware0 = parse(val)
+    naive0 = aware0.replace(tzinfo=None)
+
+    # (str -> ) naive -> aware
+    naive1 = datetime.strptime(val[:-1], "%Y/%m/%dT%H:%M:%S")
+    aware1_utc = naive1.replace(tzinfo=UTC)
+
+    # utc -> jst
+    # 違うtimezoneでの時間にする
+    aware1_jst = aware1_utc.astimezone(JST)
+    # 違うtimezoneに書き換える
+    aware2_jst = aware1_utc.replace(tzinfo=None)
+
+:tt:`datetime.timezone` で定義した時と同じように使えます．時代によって異なるtimezoneにも対応します．
+
+.. code-block:: python
+
+    >>> aware2_jst.strftime("%Z%z")
+    'JST+0900'
+    >>> (aware2_jst - timedelta(hours=24 * 365 * 200)).strftime("%Z%z")
+    'LMT+091859'
+    >>> 
+
+:tt:`dateutil.parser.parse` がらくです．つよい．
+
+----
+
+.. _`前にQiitaに書いた`: https://qiita.com/__Bren/items/8d84cb2c56cb9f246eff
+.. _`公式ドキュメントのastimezone`: https://docs.python.org/3.8/library/datetime.html#datetime.datetime.astimezone
+.. _`指定子一覧の表`: https://docs.python.org/3.8/library/datetime.html#strftime-and-strptime-format-codes
+
+.. _`Stack Overflowの書き込み`: https://stackoverflow.com/questions/19654578/python-utc-datetime-objects-iso-format-doesnt-include-z-zulu-or-zero-offset/54272238
+.. _`pytz: The Fastest Footgun in the West`: https://blog.ganssle.io/articles/2018/03/pytz-fastest-footgun.html
+
+.. [#]
+    地域によってはJSTが+9時間では無いパターンがあるので適宜変数命名に気をつけることが重要
+
+.. [#]
+    夏時間みたいなのに対応するにはtzinfoのサブクラス作らないとだめなようです
+
+.. [#]
+    伝聞調なのは **私が完全には理解してないから** です．
+
+    .. code-block:: python
+
+        >>> from datetime import datetime
+        >>> from datetime import timezone as tz_dt
+
+    まずは :tt:`pytz.timezone` でJSTを定義して :tt:`tzinfo` に食わせる
+
+    .. code-block:: python
+
+        >>> from pytz import timezone
+        >>> JST_PT = timezone("Asia/Tokyo")
+        >>> repr(JST_PT)
+        "<DstTzInfo 'Asia/Tokyo' LMT+9:19:00 STD>"
+        >>> 
+        >>> dt_pt = datetime(2020, 2, 20, 21, 0, 0, tzinfo=JST_PT)
+        >>> dt_pt.strftime("%Z%z")
+        'LMT+0919'
+        >>> 
+        >>> datetime.now(tz_dt.utc).replace(tzinfo=JST_PT)
+        datetime.datetime(2020, 2, 20, 12, 40, 30, 564657, tzinfo=<DstTzInfo 'Asia/Tokyo' LMT+9:19:00 STD>)
+        >>> 
+        >>> datetime.now(tz_dt.utc).replace(tzinfo=JST_PT).strftime("%Z%z")
+        'LMT+0919'
+
+    :tt:`dateutil.tz.gettz` でJSTを定義して :tt:`tzinfo` に食わせる
+
+    .. code-block:: python
+
+        >>> from dateutil.tz import gettz
+        >>> JST_DU = gettz("Asia/Tokyo")
+        >>> repr(JST_DU)
+        "tzfile('/usr/share/zoneinfo/Asia/Tokyo')"
+        >>> 
+        >>> dt_du = datetime(2020, 2, 20, 21, 0, 0, tzinfo=JST_DU)
+        >>> dt_du.strftime("%Z%z")
+        'JST+0900'
+        >>> 
+        >>> datetime.now(tz_dt.utc).replace(tzinfo=JST_DU)
+        datetime.datetime(2020, 2, 20, 12, 40, 37, 256257, tzinfo=tzfile('/usr/share/zoneinfo/Asia/Tokyo'))
+        >>> 
+        >>> datetime.now(tz_dt.utc).replace(tzinfo=JST_DU).strftime("%Z%z")
+        'JST+0900'
+        >>> 
+
+    :tt:`dateutil.tz.gettz` で 得られる :tt:`tzfile` ( :tt:`tzinfo` のサブクラス)を :tt:`datetime` なり :tt:`replace` なりの :tt:`tzinfo` に食わすと19分ズレが起こらない．なんで？tzfileがよしなに処理して返すの？

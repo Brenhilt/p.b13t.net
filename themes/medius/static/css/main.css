@@ -329,3 +329,5 @@ div.pagination a:active { outline: none; color: rgba(0, 0, 0, 0.8); border-color
 /*# sourceMappingURL=main.css.map */
 
 .strike { text-decoration: line-through; }
+.tt { font-size: 90%; font-family: monoscape; background-color: #F5F5F5; padding: 0 6px; }
+.footnote * { font-size: 95%; }
