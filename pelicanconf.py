@@ -5,8 +5,6 @@ from __future__ import unicode_literals
 AUTHOR = "Brenhilt"
 SITENAME = "チラシの裏も印刷されてる"
 SITEURL = ""
-THEME = "themes/gum"
-THEME = "themes/voidy-bootstrap"
 THEME = "themes/medius"
 
 PATH = "content"
